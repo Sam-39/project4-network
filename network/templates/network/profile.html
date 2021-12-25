@@ -1,0 +1,76 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+<div class="text-center">
+    <i class="bi-person-circle" style="font-size: 5.5rem"></i>
+    <h1>{{ profile.username }}</h1>
+
+    <button class="btn btn-link text-secondary" data-toggle="modal" data-target="#followers">Followers <span class="badge badge-secondary">{{profile.followers.count}}</span></button>
+    <button class="btn btn-link text-secondary" data-toggle="modal" data-target="#following">Following <span class="badge badge-secondary">{{profile.following.count}}</span></button>
+    <br>
+    {% if user != profile %}
+        {% if is_following %}
+            <form action="{% url 'unfollow' profile %}" method="post">
+            {% csrf_token %}
+                <button class="btn btn-danger rounded-pill mt-3"><strong>Unfollow</strong></button>
+        </form>
+        {% else %}
+            <form action="{% url 'follow' profile %}" method="post">
+            {% csrf_token %}
+                <button class="btn btn-primary rounded-pill mt-3"><strong>Follow</strong></button>
+            </form>
+        {% endif %}
+    {% endif %}
+    <hr>
+</div>
+
+<div class="d-flex justify-content-center">
+    <h4 class="font-weight-bold text-muted">Posts :</h4>
+</div>
+
+<!-- Posts Section -->
+<div id="posts">
+    {% include "network/posts.html" %}
+</div>
+
+<!-- Followers Modal -->
+<div class="modal fade" id="followers" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Followers:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-left">
+                {% for user in profile.followers.all %}
+                <a href="{% url 'profile' user.username %}"><h5><i class="bi-person-circle"></i> {{user.username}} </h5></a>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Following Modal -->
+<div class="modal fade text-center" id="following" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Following:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-left">
+                {% for user in profile.following.all %}
+                <a href="{% url 'profile' user.username %}"><h5><i class="bi-person-circle"></i> {{user.username}} </h5></a>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

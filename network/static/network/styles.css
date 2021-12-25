@@ -1,0 +1,23 @@
+textarea {
+    resize: none;
+    overflow: hidden;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
+
+.btn:focus,
+.btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+#all,
+#following,
+#profile {
+    cursor: pointer;
+}
+.btn-primary:disabled {
+    cursor: default;
+}

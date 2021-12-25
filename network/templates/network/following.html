@@ -1,0 +1,14 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+<div class="d-flex justify-content-center">
+    <h4 class="font-weight-bold text-muted my-4">Posts from users you follow :</h4>
+</div>
+
+<!-- Posts Section -->
+<div id="posts">
+    {% include "network/posts.html" %}
+</div>
+
+{% endblock %}

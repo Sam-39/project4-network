@@ -1,0 +1,43 @@
+<!-- Posts + Pagination -->
+
+{% for post in page_obj %}
+    <div class="post-box border-bottom pb-2 mb-2">
+
+        <a href="{% url 'profile' post.poster %}">
+            <i class="bi bi-person-circle mr-2"></i><strong>{{ post.poster }}</strong>
+        </a>
+        <small class="ml-2 text-muted"><i class="bi bi-clock"></i> {{post.timestamp}}</small>
+        {% if request.user == post.poster %}
+        <button class="edit_btn btn btn-link text-primary float-right" data-post="{{post.id}}">Edit</button>
+        {% endif %}
+        <p class="mt-3 mb-2">{{post.content}}</p>
+
+        {% if request.user in post.likes.all %}
+        <i id="{{post.id}}" class="like_btn bi-suit-heart-fill" style="cursor:pointer; color:red; font-size:1.2rem"></i>
+        {% else %}
+        <i id="{{post.id}}" class="like_btn bi-suit-heart" style="cursor:pointer; color:gray; font-size:1.2rem"></i>
+        {% endif %}
+
+        <span class="likes_count ml-2 ">{{post.likes.count}}</span>
+        <small>likes</small>
+    </div>
+{% endfor %}
+
+
+<nav class="row justify-content-center m-3">
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+        {% endif %}
+
+        <span class="current">
+            <li class="page-item page-link text-dark"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</li>
+
+        </span>
+
+        {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
